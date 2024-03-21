@@ -3,12 +3,14 @@ import Breadcrumb from "@/app/ui/Breadcrumb"
 import { revalidatePath } from "next/cache";
 import { redirect } from 'next/navigation';
 
-const client = new CosmosClient({ endpoint: process.env["COSMOSDB_ENDPOINT"], key: process.env["COSMOSDB_KEY"] });
-
-const database = client.database("SWAStore");
-const container = database.container("Items");
+export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }) {
+
+  const client = new CosmosClient({ endpoint: process.env["COSMOSDB_ENDPOINT"], key: process.env["COSMOSDB_KEY"] });
+
+  const database = client.database("SWAStore");
+  const container = database.container("Items");
 
   const itemId = params.id;
   const { resource: item } = await container.item(itemId, itemId).read();
